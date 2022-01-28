@@ -1,6 +1,7 @@
-const url = require('url');
+// const url = require('url');
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
 
 const server = new http.Server();
 
@@ -12,7 +13,26 @@ server.on('request', (req, res) => {
 
   switch (req.method) {
     case 'GET':
+      if (pathname.includes('/')) {
+        res.statusCode = '400';
+        res.end('Bad Request');
+      }
 
+      const fileStream = fs.createReadStream(filepath);
+      fileStream
+          .on('error', () => {
+            res.statusCode = '404';
+            res.end('Not Found');
+          })
+          .pipe(res)
+          .on('error', () => {
+            res.statusCode = '500';
+            res.end('Something goes wrong');
+          });
+
+      req.on('aborted', () => {
+        fileStream.destroy();
+      });
       break;
 
     default:
