@@ -49,6 +49,8 @@ server.on('request', (req, res) => {
       limitStream
           .on('error', err => {
             if (err instanceof LimitExceededError) {
+              res.statusCode = 413;
+              res.end('File size exceeded');
               streamWrite.destroy();
               fs.unlink(filepath, err => {
                 if (err) {
@@ -56,8 +58,6 @@ server.on('request', (req, res) => {
                   console.log('fs.unlink Error');
                 }
               });
-              res.statusCode = 413;
-              res.end('File size exceeded');
             } else {
               res.statusCode = 500;
               res.end('Server error');
