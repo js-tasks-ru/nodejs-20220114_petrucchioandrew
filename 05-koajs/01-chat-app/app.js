@@ -10,6 +10,8 @@ app.use(async (ctx, next) => {
   } catch (err) {
     // log error
     console.log(err);
+    ctx.status = 500;
+    ctx.body = 'internal server error';
   }
 });
 

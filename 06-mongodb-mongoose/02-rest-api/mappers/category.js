@@ -1,9 +1,9 @@
 module.exports = function mapCategory(category) {
   return {
-    id: category.id,
+    id: category._id,
     title: category.title,
     subcategories: category.subcategories.map((subcategory) => ({
-      id: subcategory.id,
+      id: subcategory._id,
       title: subcategory.title,
     })),
   };

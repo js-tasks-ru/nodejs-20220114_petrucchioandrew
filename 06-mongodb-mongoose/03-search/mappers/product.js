@@ -1,6 +1,6 @@
 module.exports = function mapProduct(product) {
   return {
-    id: product.id,
+    id: product._id,
     title: product.title,
     images: product.images,
     category: product.category,
